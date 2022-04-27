@@ -4,9 +4,9 @@
 
 * 数据库初始化
 
-   请见src/main/resources/init.sql
+   在您的MYSQL中执行src/main/resources/init.sql
 
-* 配置application.properties
+* 配置 application.properties 配置项
 
    1. 配置数据库地址以及账号密码
    2. file.upload.url=D:/courseWarehouse/files 创建平台文件存储路径
@@ -50,9 +50,10 @@
    
     教师能够创建和管理课程。同时教师能够对课程的名字、介绍、章节和课程中的文件进行修改。
 
-2. 管理旗下学生
+2. 管理其下学生
     
     能够查看收藏了自己的学生，可以通过学号来添加自己旗下的学生 ，同时也能移除学生。
+   
 3. 上传和维护资源
    
     教师能在课程的章节中上传和更新教学资源。
