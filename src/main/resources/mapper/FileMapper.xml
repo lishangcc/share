@@ -17,7 +17,7 @@
 
 
 	<select id="selectFileList" resultType="com.zeng.course.model.CourseFile">
-		select * from course_file;
+		select * from course_file
 	</select>
 
 	<select id="selectFileById" resultType="com.zeng.course.model.CourseFile" parameterType="Integer">
