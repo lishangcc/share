@@ -52,11 +52,47 @@
                 <div class="box-tools text-center">
                     <button type="button" class="btn bg-maroon" id="editCourse">保&nbsp;&nbsp;存</button>
                     <button type="button" class="btn btn-success" id="insertSection">添加章节</button>
+                    <button type="button" class="btn btn-success" id="inserthomework" data-toggle="modal" data-target="#homeworkModal">发布作业</button>
                     <button type="button" class="btn bg-primary" onclick="history.back(-1);">返&nbsp;&nbsp;回</button>
                 </div>
                 <!--工具栏/-->
             </div>
 
+                <!--作业信息-->
+                <div class="panel panel-success">
+
+                    <div class="panel-heading">已发布作业</div>
+                    <div class="table-box">
+                        <!--工具栏/-->
+                        <!--数据列表-->
+                        <!--数据列表-->
+                        <table id="homeWorkList" class="table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>作业名</th>
+                                <th>介绍</th>
+                                <th>上传时间</th>
+                                <th class="text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="course_homework: ${homeworks}">
+                                <td th:text="${course_homeworkStat.index+1}"></td>
+                                <td>[[${course_homework.name}]]</td>
+                                <td th:text="${course_homework.intro}"></td>
+                                <td>[[${#dates.format(course_homework.time, 'yyyy-MM-dd HH:mm')}]]</td>
+                                <td class="text-center">
+                                    <a type="button" class="btn bg-block btn-primary" href="#" >下载</a>
+                                    <a type="button" class="btn bg-block btn-primary" th:href="@{/course/learn(id=${course_homework.courseId})}" target="_blank">查看课程</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--数据列表/-->
+
+                    </div>
+                </div>
 
             <div th:each="section:${sections}">
                 <!-- .box-body -->
@@ -142,6 +178,28 @@
                             <button type="button" id="insertFile" class="btn btn-primary">添加</button>
                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div>
+        </div>
+        <!-- /.modal -->
+
+
+        <!-- 模态框（Modal） -->
+        <div class="modal fade" id="homeworkModal" tabindex="-1" role="dialog" aria-labelledby="homeworkLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="text-align: center">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="homeworkLabel">发布作业</h4>
+                    </div>
+                    <div class="modal-body" style="text-align: center">
+                        作业名称：<input type="text" name="homeworkName"><br><br>
+                        作业介绍：<textarea name="homeworkIntro" style="height:100px;vertical-align:top"></textarea>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button type="button" class="btn btn-primary" id="insertHom">发布</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div>
@@ -388,6 +446,33 @@
                     location.reload();
                 }
             });
+        });
+
+        //发布作业按钮
+        $("#insertHom").click(function() {
+            var homeworkName=$('input[name="homeworkName"]').val();
+            var homeworkIntro=$('textarea[name="homeworkIntro"]').val();
+            var courseId=[[${course.id}]];
+            var data={
+                homeworkName:homeworkName,
+                homeworkIntro:homeworkIntro,
+                courseId:courseId
+            };
+            if (data.homeworkName!= null) {
+                $.ajax({
+                    url:"/teacher/homework/insertHomework",
+                    contentType : 'application/json;charset=utf-8',//缺少这个415
+                    type:"post",
+                    data: JSON.stringify(data),//缺少这个400
+                    success:function () {
+                        alert("发布成功");
+                        location.reload();
+                    },
+                    error:function(){alert('出错了')}
+                });
+            }else{
+                alert("请输入作业名称!");
+            }
         });
 
     </script>

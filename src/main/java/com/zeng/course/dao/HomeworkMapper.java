@@ -14,6 +14,8 @@ public interface HomeworkMapper {
 
     List<Homework> selectHomeworkByCourseId(Integer CourseId);
 
+    int insertHomework(Map map);
+
     void uploadHomework(@Param("homeworkId") Integer homeworkId,@Param("studentId") Integer studentId,@Param("pathName") String pathName);
 
     Homework_upload selectHomeworkUpload(@Param("homeworkId") Integer homeworkId, @Param("studentId") Integer studentId);

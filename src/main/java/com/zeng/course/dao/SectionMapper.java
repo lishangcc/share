@@ -5,6 +5,7 @@ import com.zeng.course.model.Section;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SectionMapper {
     List<Section> selectSectionByCourseId(Integer id);

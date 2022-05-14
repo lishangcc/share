@@ -193,7 +193,7 @@
                     <h4>教师推荐</h4>
                     <ul class="clearfix">
                         <li th:each="teacher: ${teachers}">
-                            <a href="#" target="_blank">
+                            <a th:href="@{/course/teacherList(teacherId=${teacher.id},teacherName=${teacher.name})}" target="_blank">
                                 <i class="fa fa-user"></i>
                                 <span>[[${teacher.name}]]-[[${teacher.college}]]</span>
                             </a>

@@ -1,6 +1,7 @@
 package com.zeng.course.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Homework {
     private int id;
@@ -8,6 +9,7 @@ public class Homework {
     private String name;
     private String intro;
     private Date time;
+    private List<Homework> homeworks;
 
     public int getCourseId() {
         return courseId;
@@ -48,6 +50,15 @@ public class Homework {
     public void setTime(Date time) {
         this.time = time;
     }
+
+    public List<Homework> getHomeworks() {
+        return homeworks;
+    }
+
+    public void setHomeworks(List<Homework> homeworks) {
+        this.homeworks = homeworks;
+    }
+
 
     @Override
     public String toString() {

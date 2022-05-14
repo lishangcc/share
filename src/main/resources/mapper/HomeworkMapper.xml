@@ -29,6 +29,11 @@
 		where courseId=#{courseId}
 	</select>
 
+	<insert id="insertHomework" parameterType="Map">
+		INSERT into course_homework(courseId,name,intro)
+		VALUES (#{courseId},#{name},#{intro})
+	</insert>
+
 	<select id="selectHomeworkUpload" resultMap="UploadMap">
 		SELECT u.id,s.name as studentName,u.uploadTime,score,h.id as homework_id,courseId,h.name,h.intro,h.time
 		from homework_upload u JOIN course_homework h on u.homeworkId=h.id

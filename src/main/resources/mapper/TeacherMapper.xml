@@ -5,6 +5,7 @@
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="teacherNum" property="teacherNum" jdbcType="VARCHAR" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="collegeId" property="collegeId" jdbcType="INTEGER"/>
 		<result column="college" property="college" jdbcType="VARCHAR" />
 		<result column="gender" property="gender" jdbcType="VARCHAR" />
 		<result column="tel" property="tel" jdbcType="VARCHAR" />

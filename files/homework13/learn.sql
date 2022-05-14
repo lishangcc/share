@@ -1,7 +1,18 @@
-# init.sql 数据库初始化
-DROP DATABASE IF EXISTS `course-datasource`;
-CREATE DATABASE `course-datasource`;
-USE `course-datasource`;
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : dsls
+ Source Server Type    : MySQL
+ Source Server Version : 80025
+ Source Host           : localhost:3306
+ Source Schema         : learn
+
+ Target Server Type    : MySQL
+ Target Server Version : 80025
+ File Encoding         : 65001
+
+ Date: 07/04/2022 19:19:32
+*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -16,10 +27,10 @@ CREATE TABLE `admin`  (
   `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `password` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of admin 初始化管理员账号密码
+-- Records of admin
 -- ----------------------------
 INSERT INTO `admin` VALUES (1, '管理员', 'admin', 'admin');
 
@@ -32,21 +43,14 @@ CREATE TABLE `college`  (
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `intro` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of college 初始化平台学院信息
+-- Records of college
 -- ----------------------------
-INSERT INTO `college` VALUES (1, '机电工程学院', '机械类');
-INSERT INTO `college` VALUES (10, '信息与通信学院', '通信工程');
-INSERT INTO `college` VALUES (11, '计算机与信息安全学院', '软件工程');
-INSERT INTO `college` VALUES (12, '艺术与设计学院', '艺术');
-INSERT INTO `college` VALUES (13, '商学院', '商学院');
-INSERT INTO `college` VALUES (14, '外国语学院', '英语');
-INSERT INTO `college` VALUES (15, '数学与计算科学学院', '数学');
-INSERT INTO `college` VALUES (16, '电子工程与自动化学院', '自动化');
-INSERT INTO `college` VALUES (17, '法学院', '法律');
-INSERT INTO `college` VALUES (18, '材料科学与工程学院', '材料');
+INSERT INTO `college` VALUES (2, '计算机与信息安全学院', '计算机科学与技术、软件工程');
+INSERT INTO `college` VALUES (3, '信息管理学院', '信息管理学院，信息管理与信息系统');
+INSERT INTO `college` VALUES (8, '外国语言学院', '集成英语、俄语、法语、日语、韩语、西班牙语、德语等主流外语语种');
 
 -- ----------------------------
 -- Table structure for course
@@ -61,11 +65,14 @@ CREATE TABLE `course`  (
   `teacherId` int(0) NOT NULL,
   `teacher` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of course
 -- ----------------------------
+INSERT INTO `course` VALUES (8, 'JAVA', 1, '0', 'java', 3, NULL);
+INSERT INTO `course` VALUES (9, 'web', 1, '0', 'web', 8, NULL);
+INSERT INTO `course` VALUES (10, '数据库', 1, '0', '数据库', 8, NULL);
 
 -- ----------------------------
 -- Table structure for course_file
@@ -77,13 +84,16 @@ CREATE TABLE `course_file`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
   `intro` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL,
   `path` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '0',
-  `uploadTime` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  `uploadTime` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of course_file
 -- ----------------------------
+INSERT INTO `course_file` VALUES (16, 6, '第1章.pdf', '写作业啊', 'D:/QQDownload/vueshare/course/files/course8/22计网课件第二章PPT.pdf', NULL);
+INSERT INTO `course_file` VALUES (17, 6, '第5章_文件管理.ppt', '写作业啊', 'D:/QQDownload/vueshare/course/files/course8/第5章_文件管理.ppt', NULL);
+INSERT INTO `course_file` VALUES (18, 6, 'Android应用开发综合设计.docx', 'Android应用开发综合设计.docx', 'D:/QQDownload/vueshare/course/files/course8/Android应用开发综合设计.docx', NULL);
 
 -- ----------------------------
 -- Table structure for course_follow
@@ -94,11 +104,13 @@ CREATE TABLE `course_follow`  (
   `courseId` int(0) NOT NULL,
   `studentId` int(0) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of course_follow
 -- ----------------------------
+INSERT INTO `course_follow` VALUES (2, 9, 2);
+INSERT INTO `course_follow` VALUES (3, 8, 2);
 
 -- ----------------------------
 -- Table structure for course_homework
@@ -127,11 +139,13 @@ CREATE TABLE `course_section`  (
   `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `sort` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of course_section
 -- ----------------------------
+INSERT INTO `course_section` VALUES (6, 8, '继承', 1);
+INSERT INTO `course_section` VALUES (7, 8, '哟西', 2);
 
 -- ----------------------------
 -- Table structure for file_download
@@ -141,9 +155,9 @@ CREATE TABLE `file_download`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `fileId` int(0) NOT NULL,
   `studentId` int(0) NOT NULL,
-  `downloadTime` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) ON UPDATE CURRENT_TIMESTAMP(0),
+  `downloadTime` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP(),
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of file_download
@@ -177,10 +191,10 @@ CREATE TABLE `notice`  (
   `content` text CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `record_time` datetime(0) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of notice 初始化平台通知
+-- Records of notice
 -- ----------------------------
 INSERT INTO `notice` VALUES (5, '关于考试安排', '期中考试', '2022-03-24 11:08:30');
 
@@ -193,19 +207,20 @@ CREATE TABLE `student`  (
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `stuNum` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `collegeId` int(0) NOT NULL DEFAULT 0,
-  `college` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `college` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '0',
   `tel` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `gender` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `password` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 8 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of student 初始化学生账号
+-- Records of student
 -- ----------------------------
-INSERT INTO `student` VALUES (9, '嗷嗷', '190', 1, '机电工程学院', '123', '0', '323', '123456');
-INSERT INTO `student` VALUES (10, 'student1', '190', 3, '计算机与信息安全学院', '123', '0', 'student1', '123456');
+INSERT INTO `student` VALUES (2, '李贤', '80010001', 2, '', '17709319089', '0', 'lixian', '123456');
+INSERT INTO `student` VALUES (6, '嗷嗷', '123', 1, '', '123', '0', '123456', '123456');
+INSERT INTO `student` VALUES (7, '嗷嗷', '123456', 2, '0', '123456', '0', 'qqq', '123456');
 
 -- ----------------------------
 -- Table structure for teacher
@@ -214,24 +229,27 @@ DROP TABLE IF EXISTS `teacher`;
 CREATE TABLE `teacher`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-  `gender` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-  `collegeId` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
-  `college` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL,
+  `gender` int(0) NOT NULL DEFAULT 0,
+  `collegeId` int(0) NOT NULL DEFAULT 0,
   `tel` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '0',
   `username` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `password` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   `teacherNum` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8 COLLATE = utf8_unicode_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Records of teacher 初始化教师账号
+-- Records of teacher
 -- ----------------------------
-INSERT INTO `teacher` VALUES (10, 'test6', '0', '8', '机电工程学院', '123', 'test6', '123', '123');
-INSERT INTO `teacher` VALUES (11, '嗷嗷', '0', '1', NULL, '123', '323', '688275', '111');
+INSERT INTO `teacher` VALUES (1, '李正涛', 0, 8, '13990390912', 'lizhengtao', '111111', '80012001');
+INSERT INTO `teacher` VALUES (3, '32', 0, 2, '323', '323', '3232', '232');
+INSERT INTO `teacher` VALUES (4, 'wewq', 0, 2, 'eqwewqe', 'qweqwe', 'ewqe', 'ewqewq');
+INSERT INTO `teacher` VALUES (5, '21321', 1, 2, '321312', '321312', '312321', '32131');
+INSERT INTO `teacher` VALUES (8, '哟', 0, 2, '123', '123', '123456', '190');
+INSERT INTO `teacher` VALUES (9, '111', 0, 2, '123', 'lixian', '123456', '111');
 
 -- ----------------------------
--- Table structure for teacher_follow 学生关注教师 学生教师关系表
+-- Table structure for teacher_follow
 -- ----------------------------
 DROP TABLE IF EXISTS `teacher_follow`;
 CREATE TABLE `teacher_follow`  (
@@ -244,5 +262,8 @@ CREATE TABLE `teacher_follow`  (
 -- ----------------------------
 -- Records of teacher_follow
 -- ----------------------------
+INSERT INTO `teacher_follow` VALUES (1, 1, 2);
+INSERT INTO `teacher_follow` VALUES (3, 3, 2);
+INSERT INTO `teacher_follow` VALUES (4, 8, 2);
 
 SET FOREIGN_KEY_CHECKS = 1;

@@ -4,6 +4,7 @@ public class Teacher {
     private Integer id;
     private String teacherNum;
     private String name;
+    private Integer collegeId;
     private String college;
     private String gender;
     private String tel;
@@ -32,6 +33,14 @@ public class Teacher {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Integer getCollegeId() {
+        return collegeId;
+    }
+
+    public void setCollegeId(Integer collegeId) {
+        this.collegeId = collegeId;
     }
 
     public String getCollege() {
@@ -80,6 +89,7 @@ public class Teacher {
                 "id=" + id +
                 ", teacherNum='" + teacherNum + '\'' +
                 ", name='" + name + '\'' +
+                ", collegeId=" + collegeId +
                 ", college='" + college + '\'' +
                 ", gender='" + gender + '\'' +
                 ", tel='" + tel + '\'' +

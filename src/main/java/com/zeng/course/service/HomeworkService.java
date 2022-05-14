@@ -27,6 +27,14 @@ public class HomeworkService {
 		return homeworkMapper.selectHomeworkByCourseId(courseId);
 	}
 
+	public int insertHomework(Map map){
+		Map resmap=new HashMap();
+		resmap.put("name",map.get("name"));
+		resmap.put("courseId",map.get("courseId"));
+		resmap.put("intro",map.get("intro"));
+		return homeworkMapper.insertHomework(resmap);
+	}
+
 	public void uploadHomework(Integer homeworkId, Integer id, String pathName) {
 		homeworkMapper.uploadHomework(homeworkId,id,pathName);
 	}

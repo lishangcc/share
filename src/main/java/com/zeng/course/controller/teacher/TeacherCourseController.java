@@ -1,10 +1,7 @@
 package com.zeng.course.controller.teacher;
 
 //import com.sun.deploy.net.HttpResponse;
-import com.zeng.course.model.Course;
-import com.zeng.course.model.Section;
-import com.zeng.course.model.Student;
-import com.zeng.course.model.Teacher;
+import com.zeng.course.model.*;
 import com.zeng.course.service.*;
 import com.zeng.course.util.PageResult;
 //import org.omg.PortableInterceptor.INACTIVE;
@@ -37,6 +34,8 @@ public class TeacherCourseController {
     @Autowired
     SectionService sectionService;
     @Autowired
+    HomeworkService homeworkService;
+    @Autowired
     FileService fileService;
     @Value("${file.upload.url}")
     private String fileUploadPath;
@@ -65,6 +64,7 @@ public class TeacherCourseController {
         resMap.put("name", courseName);
         resMap.put("intro", courseIntro);
         resMap.put("teacherId", teacher.getId());
+        resMap.put("collegeId",teacher.getCollegeId());
         courseService.insertCourse(resMap);
         return "添加成功";
     }
@@ -87,6 +87,10 @@ public class TeacherCourseController {
         List<Section> sections = sectionService.selectSectionByCourseId(courseId);
         model.addAttribute("course", course);
         model.addAttribute("sections", sections);
+
+        List<Homework> homeworks = homeworkService.selectHomeworkByCurseId(courseId);
+        model.addAttribute("homeworks",homeworks);
+
         return "teacher/course-edit";
 
     }
@@ -115,6 +119,28 @@ public class TeacherCourseController {
     @PostMapping("/section/insertSection")
     public void insertSection(@RequestBody Map<String, Object> map, HttpServletResponse response){
         sectionService.insertSection(map);
+    }
+
+    /**
+     * 作业布置
+     */
+    @PostMapping("/homework/insertHomework")
+    public void editHomework(@RequestBody Map<String, Object> map, HttpSession session, HttpServletResponse response){
+        String homeworkName = (String) map.get("homeworkName");
+        String homeworkIntro = (String) map.get("homeworkIntro");
+        Integer courseId = (Integer) map.get("courseId");
+
+        System.out.println(homeworkName);
+        System.out.println(homeworkIntro);
+        System.out.println(courseId);
+//        Teacher teacher = (Course) session.getAttribute("teacherUser");
+//        Integer course= (Integer) map.get("courseId");
+        Map resMap = new HashMap();
+        resMap.put("name", homeworkName);
+        resMap.put("intro", homeworkIntro);
+        resMap.put("courseId", courseId);
+//        courseService.insertCourse(resMap);
+        homeworkService.insertHomework(resMap);
     }
 
     /**

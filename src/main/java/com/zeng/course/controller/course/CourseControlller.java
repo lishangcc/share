@@ -107,7 +107,6 @@ public class CourseControlller {
 
     /**
      * 课程资源下载
-     * URL格式：http://127.0.0.1:8080/course/download?fileId=24&path=D:/courseWarehouse/files/course10/%E2%96%B6%20Page%201%20-%20Untitled%20-%20Google%20Chrome%202021-12-12%2023-36-36.mp4&fileName=cours.mp4
      */
     @GetMapping("/download")
     @ResponseBody
@@ -117,40 +116,33 @@ public class CourseControlller {
                                  @RequestParam("path")String path,
                                  @RequestParam("fileName")String fileName) throws IOException {
         if(path!=null){
-            File file=new File(path);;
+            File file=new File(path);
             if(file.exists()){
-                response.setContentType("multipart/form-data");//二进制传输数据
-                response.setHeader("Content-Disposition", "attachment;fileName="
+                response.setContentType("application/force-download");
+                response.setHeader("Content-Disposition", "attachment; filename="
                                                            + java.net.URLEncoder.encode(fileName, "UTF-8"));
                 byte[] buffer=new byte[1024];
                 FileInputStream fis=null;
                 BufferedInputStream bis=null;
                 try{
-                    //获取文件输入流
                     fis=new FileInputStream(file);
                     bis=new BufferedInputStream(fis);
-                    //获取response对象输出流
                     OutputStream os=response.getOutputStream();
                     int i=bis.read(buffer);
                     while(i!=-1){
-                        os.write(buffer,0,i);
+                        os.write(buffer,0,1);
                         i=bis.read(buffer);
                     }
-                    //如果是学生则获取在session中存储的信息
                     Student student= (Student) request.getSession().getAttribute("studentUser");
                     if(student!=null){
-                        //记录此下载记录
                         fileService.insertFileDownload(student.getId(),fileId);
                     }
                 }catch (Exception e){
                     e.printStackTrace();
                 }finally {
-                    //关闭文件输入流
                     bis.close();
                     fis.close();
                 }
-            }else{
-                response.setStatus(404);//所要的文件不存在，响应404
             }
         }
     }
