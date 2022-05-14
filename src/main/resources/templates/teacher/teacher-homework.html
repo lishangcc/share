@@ -80,7 +80,7 @@
                                         <td>[[${#dates.format(homewordUpload.uploadTime, 'yyyy-MM-dd HH:mm')}]]</td>
                                         <td th:text="${homewordUpload.score}"></td>
                                         <td class="text-center">
-                                            <a type="button" class="btn bg-block btn-primary">下载查看</a>
+                                            <button type="button" th:homeworkUploadId="${homewordUpload.id}" class="btn bg-block btn-primary homework-download">下载查看</button>
                                             <a type="button" class="btn bg-block btn-primary" th:onclick="editScore([[${homewordUpload.id}]])">修改分数</a>
                                         </td>
                                         <!-- /.modal -->
@@ -248,6 +248,9 @@
                 alert("请输入分数!");
             }
         }
+        $(".homework-download").click(function(e){
+            window.location.assign("/teacher/homeworkUpload?homeworkUploadId="+e.target.getAttribute("homeworkUploadId"));
+        });
     </script>
 </body>
 

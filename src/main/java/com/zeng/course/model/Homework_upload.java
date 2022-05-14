@@ -7,7 +7,9 @@ public class Homework_upload {
     private String student;
     private Homework homework;
     private Date uploadTime;
+    private String path;
     private int score;
+
 
     public int getId() {
         return id;
@@ -57,6 +59,15 @@ public class Homework_upload {
                 ", homework=" + homework +
                 ", uploadTime=" + uploadTime +
                 ", score=" + score +
+                ", path=" + path +
                 '}';
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

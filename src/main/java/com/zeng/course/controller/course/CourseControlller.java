@@ -129,8 +129,8 @@ public class CourseControlller {
                     bis=new BufferedInputStream(fis);
                     OutputStream os=response.getOutputStream();
                     int i=bis.read(buffer);
-                    while(i!=-1){
-                        os.write(buffer,0,1);
+                    while(i!=-1&&i!=0){
+                        os.write(buffer,0,i);
                         i=bis.read(buffer);
                     }
                     Student student= (Student) request.getSession().getAttribute("studentUser");

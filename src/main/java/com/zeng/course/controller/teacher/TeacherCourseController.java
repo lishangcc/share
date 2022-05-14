@@ -5,6 +5,7 @@ import com.zeng.course.model.*;
 import com.zeng.course.service.*;
 import com.zeng.course.util.PageResult;
 //import org.omg.PortableInterceptor.INACTIVE;
+import lombok.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -15,8 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -95,6 +95,50 @@ public class TeacherCourseController {
 
     }
 
+    @GetMapping("/homeworkUpload")
+    public void getHomeworkUpload(@RequestParam("homeworkUploadId") @NonNull String homeworkUploadId, HttpSession session,HttpServletResponse httpServletResponse) throws IOException {
+        System.out.println("homeworkUploadId= "+homeworkUploadId);
+        Teacher teacher=(Teacher)session.getAttribute("teacherUser");
+        //查找文件地址
+        Map map=new HashMap();
+        map.put("homeworkUploadId",homeworkUploadId);
+        map.put("teacherId",teacher.getId());
+        Homework_upload homework_upload=homeworkService.getFilePathByTeacherIdAndHomeworkUploadId(map);
+        if(homework_upload==null){
+            httpServletResponse.setStatus(401);
+            return;
+        }
+        httpServletResponse.setStatus(200);
+        File file=null;
+        FileInputStream fis = null;
+        BufferedInputStream bis = null;
+        try{
+            file=new File(homework_upload.getPath());
+            if(file!=null&&file.exists()) {
+                httpServletResponse.setContentType("application/force-download");
+                httpServletResponse.setHeader("Content-Disposition", "attachment; filename="
+                        + java.net.URLEncoder.encode(file.getName(), "UTF-8"));
+                byte[] buffer = new byte[1024];
+                fis = new FileInputStream(file);
+                bis = new BufferedInputStream(fis);
+                OutputStream os = httpServletResponse.getOutputStream();
+                int i = bis.read(buffer);
+                while (i != -1&&i!=0) {
+                    os.write(buffer, 0, i);
+                    i = bis.read(buffer);
+                }
+            }
+
+        }catch (Exception e){
+                e.printStackTrace();
+        }finally {
+                if(bis!=null)
+                    bis.close();
+                if(fis!=null)
+                    fis.close();
+        }
+    }
+
     /**
      * 修改课程
      */
@@ -141,6 +185,49 @@ public class TeacherCourseController {
         resMap.put("courseId", courseId);
 //        courseService.insertCourse(resMap);
         homeworkService.insertHomework(resMap);
+    }
+
+    /**
+     * 作业更新
+     */
+    @PutMapping("/homework")
+    public void updateHomework(@RequestBody Map<String, Object> map, HttpSession session, HttpServletResponse response){
+        String homeworkName = (String) map.get("homeworkName");//作业名称
+        String homeworkIntro = (String) map.get("homeworkIntro");//作业详情
+        Integer courseId = (Integer) map.get("courseId");//课程id
+        String homeworkId=(String)map.get("homeworkId");//作业id
+        Teacher teacher = (Teacher) session.getAttribute("teacherUser");
+        Map resMap = new HashMap();
+        resMap.put("name", homeworkName);
+        resMap.put("intro", homeworkIntro);
+        resMap.put("courseId", courseId);
+        resMap.put("teacherId",teacher.getId());
+        resMap.put("homeworkId",homeworkId);
+        System.out.println(resMap);
+        boolean res=homeworkService.updateHomeWork(resMap);
+        if(res){
+            response.setStatus(200);
+        }else{
+            response.setStatus(401);
+        }
+    }
+    /**
+     * 作业删除
+     */
+    @DeleteMapping("/homework")
+    public void deleteHomework(@RequestBody Map<String, Object> map, HttpSession session, HttpServletResponse response){
+        String homeworkId=(String)map.get("homeworkId");//作业id
+        Teacher teacher = (Teacher) session.getAttribute("teacherUser");
+        Map resMap = new HashMap();
+        resMap.put("teacherId",teacher.getId());
+        resMap.put("homeworkId",homeworkId);
+        System.out.println(resMap);
+        boolean res=homeworkService.deleteHomework(resMap);
+        if(res){
+            response.setStatus(200);
+        }else{
+            response.setStatus(401);
+        }
     }
 
     /**

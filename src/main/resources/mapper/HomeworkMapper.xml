@@ -12,6 +12,7 @@
 	<resultMap id="UploadMap" type="com.zeng.course.model.Homework_upload">
 		<id property="id" column="id"  jdbcType="INTEGER" />
 		<result property="student" column="studentName" jdbcType="VARCHAR" />
+		<result property="path" column="path" jdbcType="VARCHAR" />
 		<result property="uploadTime" column="uploadTime" jdbcType="TIMESTAMP" />
 		<result property="score" column="score" jdbcType="INTEGER" />
 		<collection property="homework" ofType="com.zeng.course.model.Homework">
@@ -34,8 +35,24 @@
 		VALUES (#{courseId},#{name},#{intro})
 	</insert>
 
+	<update id="updateHomework" parameterType="Map">
+		UPDATE course_homework
+		SET name=#{name},
+		    intro = #{intro}
+		WHERE
+		      id=#{homeworkId} and
+		      #{teacherId} = (SELECT teacherId FROM course WHERE course.id=#{courseId});
+	</update>
+
+	<delete id="deleteHomework" parameterType="Map">
+		DELETE
+		FROM course_homework
+		WHERE id = #{homeworkId} and
+		      #{teacherId}=(SELECT teacherId FROM course WHERE course.id=course_homework.courseId);
+	</delete>
+
 	<select id="selectHomeworkUpload" resultMap="UploadMap">
-		SELECT u.id,s.name as studentName,u.uploadTime,score,h.id as homework_id,courseId,h.name,h.intro,h.time
+		SELECT u.id,s.name as studentName,u.uploadTime,score,h.id as homework_id,courseId,h.name,h.intro,h.time,u.path as path
 		from homework_upload u JOIN course_homework h on u.homeworkId=h.id
 		JOIN student s on u.studentId=s.id
 		where u.homeworkId=#{homeworkId} and u.studentId=#{studentId}
@@ -47,14 +64,36 @@
 	</insert>
 
 	<select id="selectHomeworkUploadByStudentId" resultMap="UploadMap">
-		SELECT u.id,s.name as studentName,u.uploadTime,score,h.id as homework_id,courseId,h.name,h.intro,h.time
+		SELECT u.id,s.name as studentName,u.uploadTime,score,h.id as homework_id,courseId,h.name,h.intro,h.time,u.path as path
 		from homework_upload u JOIN course_homework h on u.homeworkId=h.id
 		JOIN student s on u.studentId=s.id
 		where u.studentId=#{studentId}
 	</select>
 
+	<select id="selectHomeworkUploadById" resultMap="UploadMap">
+		SELECT u.id,s.name as studentName,u.uploadTime,score,h.id as homework_id,courseId,h.name,h.intro,h.time,u.path as path
+		from homework_upload u JOIN course_homework h on u.homeworkId=h.id
+							   JOIN student s on u.studentId=s.id
+		where u.homeworkId=#{homeworkId}
+	</select>
+
+	<select id="selectHomeworkUploadByhomeworkUploadIdAndTeacherId" resultMap="UploadMap">
+		SELECT u.id,s.name as studentName,u.uploadTime,score,h.id as homework_id,courseId,h.name,h.intro,h.time,u.path as path
+		from homework_upload u JOIN course_homework h on u.homeworkId=h.id
+							   JOIN student s on u.studentId=s.id
+		where u.id=#{homeworkUploadId} and
+		      #{teacherId}=(
+		          SELECT teacherId
+		          FROM course
+		          WHERE course.id=(
+		              SELECT courseId
+		              FROM course_homework
+		              WHERE course_homework.id=u.homeworkId)
+		          );
+	</select>
+
 	<select id="selectUploadsByCourseId" resultMap="UploadMap">
-		SELECT u.id,s.name as studentName,u.uploadTime,score,h.id as homework_id,courseId,h.name,h.intro,h.time
+		SELECT u.id,s.name as studentName,u.uploadTime,score,h.id as homework_id,courseId,h.name,h.intro,h.time,u.path as path
 		from homework_upload u JOIN course_homework h on u.homeworkId=h.id
 		JOIN student s on u.studentId=s.id
 		where h.courseId=#{courseId}

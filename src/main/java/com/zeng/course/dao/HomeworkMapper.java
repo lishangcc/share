@@ -16,9 +16,29 @@ public interface HomeworkMapper {
 
     int insertHomework(Map map);
 
+    /**
+     * 更新作业
+     * @param map
+     * @return
+     */
+    int updateHomework(Map map);
+
+    /**
+     * 删除作业
+     * @param map
+     * @return
+     */
+    int deleteHomework(Map map);
+
+
+
+    List<Homework_upload> selectHomeworkUploadById(String homeworkId);
+
     void uploadHomework(@Param("homeworkId") Integer homeworkId,@Param("studentId") Integer studentId,@Param("pathName") String pathName);
 
     Homework_upload selectHomeworkUpload(@Param("homeworkId") Integer homeworkId, @Param("studentId") Integer studentId);
+
+    Homework_upload selectHomeworkUploadByhomeworkUploadIdAndTeacherId(@Param("homeworkUploadId") String homeworkUploadId,@Param("teacherId") Integer teacherId);
 
     List<Homework_upload> selectHomeworkUploadByStudentId(int studentId);
 

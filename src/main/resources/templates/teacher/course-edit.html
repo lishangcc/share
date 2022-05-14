@@ -83,8 +83,8 @@
                                 <td th:text="${course_homework.intro}"></td>
                                 <td>[[${#dates.format(course_homework.time, 'yyyy-MM-dd HH:mm')}]]</td>
                                 <td class="text-center">
-                                    <a type="button" class="btn bg-block btn-primary" href="#" >下载</a>
-                                    <a type="button" class="btn bg-block btn-primary" th:href="@{/course/learn(id=${course_homework.courseId})}" target="_blank">查看课程</a>
+                                    <button th:homeworkId="${course_homework.getId()}" class="btn bg-block btn-primary course-update-button" >更新</button>
+                                    <button th:homeworkId="${course_homework.getId()}" class="btn bg-block btn-primary course-delete-button" >删除</button>
                                 </td>
                             </tr>
                             </tbody>
@@ -200,6 +200,24 @@
                     <div class="modal-footer" style="text-align: center">
                         <button type="button" class="btn btn-primary" id="insertHom">发布</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div>
+        </div>
+        <div class="modal fade" id="homeworkUpdateModal" tabindex="-1" role="dialog" aria-labelledby="homeworkLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header" style="text-align: center">
+                        <button type="button" class="close update-modal-close">&times;</button>
+                        <h4 class="modal-title" id="homeworkUpdateModalLabel">更新作业</h4>
+                    </div>
+                    <div class="modal-body" style="text-align: center">
+                        作业名称：<input type="text" name="updateHomeworkName"><br><br>
+                        作业介绍：<textarea name="updateHomeworkIntro" style="height:100px;vertical-align:top"></textarea>
+                    </div>
+                    <div class="modal-footer" style="text-align: center">
+                        <button type="button" class="btn btn-primary" id="updateCourse">更新</button>
+                        <button type="button" class="update-modal-close btn btn-primary">关闭</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div>
@@ -474,7 +492,68 @@
                 alert("请输入作业名称!");
             }
         });
+        if(!window.course)
+            window.course={};
+        window.course.updateHomeState={
+            homeworkId:''
+        };
+        //更新作业按钮
+        $("#updateCourse").click(function(e) {
+            var homeworkName=$('input[name="updateHomeworkName"]').val();
+            var homeworkIntro=$('textarea[name="updateHomeworkIntro"]').val();
+            var courseId=[[${course.id}]];
+            var data={
+                homeworkName:homeworkName,
+                homeworkIntro:homeworkIntro,
+                courseId:courseId,
+                homeworkId:window.course.updateHomeState.homeworkId
+            };
+            if (data.homeworkName!= null) {
+                $.ajax({
+                    url:"/teacher/homework",
+                    contentType : 'application/json;charset=utf-8',//缺少这个415
+                    type:"put",
+                    data: JSON.stringify(data),//缺少这个400
+                    success:function () {
+                        alert("更新成功");
+                        location.reload();
+                    },
+                    error:function(){alert('出错了')}
+                });
+            }else{
+                alert("请输入作业名称!");
+            }
+        });
 
+        $(".course-update-button").click(function(e){
+            window.course.updateHomeState.homeworkId=e.target.getAttribute("homeworkId");
+            let modal=document.getElementById("homeworkUpdateModal");
+            modal.style.display="block";
+            modal.className="modal fade in";
+        });
+
+        $(".course-delete-button").click(function(e){
+            let homeworkId=e.target.getAttribute("homeworkId");
+            $.ajax({
+                url:"/teacher/homework",
+                contentType : 'application/json;charset=utf-8',//缺少这个415
+                type:"delete",
+                data: JSON.stringify({
+                    homeworkId:homeworkId
+                }),
+                success:function () {
+                    alert("删除成功");
+                    location.reload();
+                },
+                error:function(){alert('出错了')}
+            });
+        });
+
+        $(".update-modal-close").click(function(){
+            let modal=document.getElementById("homeworkUpdateModal");
+            modal.style.display="none";
+            modal.className="modal fade";
+        });
     </script>
 </body>
 
