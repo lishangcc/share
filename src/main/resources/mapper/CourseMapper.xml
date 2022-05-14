@@ -38,8 +38,14 @@
 	</delete>
 
 	<insert id="insertCourse" parameterType="Map">
-		INSERT into course (name,teacherId,intro)
-		VALUES (#{name},#{teacherId},#{intro})
+		INSERT into course (name,teacherId,intro,collegeId,teacher)
+		VALUES (
+		        #{name},
+		        #{teacherId},
+		        #{intro},
+		        (SELECT collegeId as teacherCollegeId FROM teacher WHERE teacher.id=#{teacherId}),
+		        (SELECT name as teacherName FROM teacher WHERE teacher.id=#{teacherId})
+		);
 	</insert>
 
 	<update id="updateCourse" parameterType="Map">
