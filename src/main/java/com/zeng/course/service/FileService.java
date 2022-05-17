@@ -128,7 +128,7 @@ public class FileService {
         }
 
         //创建Directory流对象,声明索引库位置
-        Directory directory = FSDirectory.open(Paths.get("D:\\QQDownload\\vueshare\\course\\dir"));
+        Directory directory = FSDirectory.open(Paths.get("D:\\t4\\course\\dir"));   //修改你对应的dir位置
         //创建索引读取对象IndexReader
         IndexReader reader = DirectoryReader.open(directory);
         //创建索引搜索对象

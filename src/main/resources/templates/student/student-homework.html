@@ -77,7 +77,7 @@
                                         <td>[[${#dates.format(homework_upload.uploadTime, 'yyyy-MM-dd HH:mm')}]]</td>
                                         <td th:text="${homework_upload.score}"></td>
                                         <td class="text-center">
-                                            <a type="button" class="btn bg-block btn-primary" href="#" >下载</a>
+                                            <a type="button" class="btn bg-block btn-primary" th:href="@{/teacher/homeworkUpload(homeworkUploadId=${homework_upload.id})}" >下载</a>
                                             <a type="button" class="btn bg-block btn-primary" th:href="@{/course/learn(id=${homework_upload.homework.courseId})}" target="_blank">查看课程</a>
                                         </td>
                                     </tr>

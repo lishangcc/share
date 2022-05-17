@@ -37,18 +37,18 @@
         </div>
         <div class="in-nav-list container">
             <ul class="clearfix">
-                <li class="active"><a th:href="@{/index}">首页</a></li>
-                <li><a th:href="@{/course/list}">课程</a></li>
-                <li><a th:href="@{/course/search}">资源搜索</a></li>
+                <li class="active"><a th:href="@{/index}" style="line-height: 60px">首页</a></li>
+                <li><a th:href="@{/course/list}"style="line-height: 60px">课程</a></li>
+                <li><a th:href="@{/course/search}"style="line-height: 60px">资源搜索</a></li>
                 <li class="pull-right">
-                    <a th:href="@{/student/index}" target="_blank">我的</a>
+                    <a th:href="@{/student/index}" target="_blank"style="line-height: 60px">我的</a>
                 </li>
             </ul>
         </div>
         <div class="in-focus" style="margin-top:8px;" th:if="${session.studentUser}!=null">
-            <div class="weixin">
-                <a th:href="@{/student/index}">欢迎您：[[${session.studentUser.name}]]</a>
-            </div>
+<!--            <div class="weixin">-->
+<!--                <a th:href="@{/student/index}">欢迎您：[[${session.studentUser.name}]]</a>-->
+<!--            </div>-->
 <!--            <div class="weixin">-->
 <!--                <a th:href="@{/register}">注册学生或教师账号</a>-->
 <!--            </div>-->
