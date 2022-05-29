@@ -26,6 +26,7 @@ import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
@@ -110,6 +111,9 @@ public class FileService {
 //        return searchModel;
 //    }
 
+    @Value("${index.url}")
+    String indexPath;
+
     public PageResult searchSource(int pageNum,int pageSize,String queryString) throws ParseException, IOException, InvalidTokenOffsetsException {
         PageHelper.startPage(pageNum, pageSize);
         //创建分词器
@@ -128,7 +132,7 @@ public class FileService {
         }
 
         //创建Directory流对象,声明索引库位置
-        Directory directory = FSDirectory.open(Paths.get("D:\\t4\\course\\dir"));   //修改你对应的dir位置
+        Directory directory = FSDirectory.open(Paths.get(indexPath));   //修改你对应的dir位置
         //创建索引读取对象IndexReader
         IndexReader reader = DirectoryReader.open(directory);
         //创建索引搜索对象
